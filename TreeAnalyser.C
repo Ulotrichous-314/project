@@ -299,9 +299,9 @@ void TreeAnalyser::Fit(int n=3000,const char * outFile="data.txt")
 	RooWorkspace w("w");
 	RooRealVar *Fl = new RooRealVar("Fl","Fl",0.323,0.0,1.0);
 	RooRealVar *S3 = new RooRealVar("S3","S3",0,0,1);
-	RooRealVar *S4 = new RooRealVar("S4","S4",0.0,0,1);
-	RooRealVar *S5 = new RooRealVar("S5","S5",0.22,0,1);
-	RooRealVar *S6 = new RooRealVar("S6","S6",0.0,0,1);
+	RooRealVar *S4 = new RooRealVar("S4","S4",-0.1599,0,1);
+	RooRealVar *S5 = new RooRealVar("S5","S5",0.2492,0,1);
+	RooRealVar *S6 = new RooRealVar("S6","S6",-0.0393,0,1);
 	RooRealVar *S7 = new RooRealVar("S7","S7",-0.11,0,1);
 	RooRealVar *S8 = new RooRealVar("S8","S8",-0.03,0,1);
 	RooRealVar *S9 = new RooRealVar("S9","S9",0,0,1);
@@ -316,10 +316,10 @@ void TreeAnalyser::Fit(int n=3000,const char * outFile="data.txt")
 	data->plotOn(frame1);
 	dist->plotOn(frame1);
 	RooPlot* frame2 = thetaL->frame();
-	//data->plotOn(frame2);
+	data->plotOn(frame2);
 	dist->plotOn(frame2);
 	RooPlot* frame3 = phi->frame();
-        //data->plotOn(frame3);
+        data->plotOn(frame3);
         dist->plotOn(frame3);
 	TCanvas c1;
 	c1.Divide(3);
@@ -331,7 +331,7 @@ void TreeAnalyser::Fit(int n=3000,const char * outFile="data.txt")
 	double s5 = S5->getValV();
 	double fl = Fl->getValV();
 	double ret = s5/(sqrt(fl*(1-fl)));
-	//cout << s5 << endl;
+	cout << s5 << endl;
 	
 	ofstream file;
 	file.open(outFile,ios::app);
