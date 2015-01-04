@@ -31,7 +31,7 @@ void TreeAnalyser::Loop()
 //
 
 //set up a histogram.
- Int_t nBins=100, xRangeLower=-10, xRangeUpper=10; //4780-5780
+ Int_t nBins=100, xRangeLower=4780, xRangeUpper=5780; //4780-5780
  TH1F* h_Histogram = new TH1F("h_Histogram", "Phi;Angle Phi;Number of events", nBins,xRangeLower,xRangeUpper);
  TH1F* h_Histogram1 = new TH1F("h_Histogram1", "Kstar_IPCHI2_OWNPV Histogram;Impact Parameter;Number of events", nBins,xRangeLower,xRangeUpper);
  TH1F* h_Histogram2 = new TH1F("h_Histogram2", "Kstar_IPCHI2_OWNPV Histogram;Kstar_IPCHI2_OWNPV;Number of events", nBins,xRangeLower,xRangeUpper);
@@ -57,7 +57,7 @@ h_Histogram3->UseCurrentStyle();
 // METHOD1:
     fChain->SetBranchStatus("*",0);  // disable all branches
     fChain->SetBranchStatus("B0_M",1);  // activate branchname
-    fChain->SetBranchStatus("BDT",1);
+    //fChain->SetBranchStatus("BDT",1);
     //fChain->SetBranchStatus("K_IPCHI2_OWNPV",1);
     //fChain->SetBranchStatus("Jpsi_M",1);
 // METHOD2: replace line
@@ -74,7 +74,7 @@ h_Histogram3->UseCurrentStyle();
       nb = fChain->GetEntry(jentry);   nbytes += nb;
       // if (Cut(ientry) < 0) continue;
       //h_Histogram->Fill(BDT);
-      if(BDT>0.42){//B0_FDCHI2_OWNPV>0){ // (B0_M<5340.&&B0_M>5250)
+      if(1){//B0_FDCHI2_OWNPV>0){ // (B0_M<5340.&&B0_M>5250)
         //fill the histogram
         
         h_Histogram->Fill(B0_M);
@@ -298,13 +298,13 @@ void TreeAnalyser::Fit(int n=3000,const char * outFile="data.txt")
 	*/
 	RooWorkspace w("w");
 	RooRealVar *Fl = new RooRealVar("Fl","Fl",0.323,0.0,1.0);
-	RooRealVar *S3 = new RooRealVar("S3","S3",0,0,1);
-	RooRealVar *S4 = new RooRealVar("S4","S4",-0.1599,0,1);
-	RooRealVar *S5 = new RooRealVar("S5","S5",0.2492,0,1);
-	RooRealVar *S6 = new RooRealVar("S6","S6",-0.0393,0,1);
-	RooRealVar *S7 = new RooRealVar("S7","S7",-0.11,0,1);
-	RooRealVar *S8 = new RooRealVar("S8","S8",-0.03,0,1);
-	RooRealVar *S9 = new RooRealVar("S9","S9",0,0,1);
+	RooRealVar *S3 = new RooRealVar("S3","S3",0.002,-1,1);
+	RooRealVar *S4 = new RooRealVar("S4","S4",-0.071,-1,1);
+	RooRealVar *S5 = new RooRealVar("S5","S5",0.22,-1,1);
+	RooRealVar *S6 = new RooRealVar("S6","S6",0.181,-1,1);
+	RooRealVar *S7 = new RooRealVar("S7","S7",0.034,-1,1);
+	RooRealVar *S8 = new RooRealVar("S8","S8",-0.008,-1,1);
+	RooRealVar *S9 = new RooRealVar("S9","S9",0.001,-1,1);
 	RooRealVar *thetaK = new RooRealVar("thetaK","thetaK",1,0,3.14);
 	RooRealVar *thetaL = new RooRealVar("thetaL","thetaL",1.63118,0,3.14);
 	RooRealVar *phi = new RooRealVar("phi","phi",0.145595,-3.14,3.14);
@@ -327,7 +327,7 @@ void TreeAnalyser::Fit(int n=3000,const char * outFile="data.txt")
 	c1.cd(2); frame2->Draw();
 	c1.cd(3); frame3->Draw();
 	c1.SaveAs("tmp.png");
-	*/
+	*/	
 	double s5 = S5->getValV();
 	double fl = Fl->getValV();
 	double ret = s5/(sqrt(fl*(1-fl)));
@@ -335,9 +335,11 @@ void TreeAnalyser::Fit(int n=3000,const char * outFile="data.txt")
 	
 	ofstream file;
 	file.open(outFile,ios::app);
+	//file << data->get(0) << " - " << data->get(1) << " - " << data->get(2);
+	//file << endl;
 	file << ret << endl;
 	file.close();
-	
+		
 }
 
 void TreeAnalyser::MultiFit(int n = 3000,int iter = 100,const char * outFile="data.txt")
